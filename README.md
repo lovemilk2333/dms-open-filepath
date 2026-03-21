@@ -12,17 +12,27 @@ A DankMaterialShell launcher plugin for quickly opening file paths.
 ## Installation
 
 ### Manual Installation
+**Make sure `rsync` was installed**
 
-** make sure `rsync` was installed **
+Clone this repo in anywhere
+```sh
+git clone git@github.com:lovemilk2333/dms-open-filepath.git --depth 1
+```
 
-```bash
+Change into the cloned directory
+```sh
+cd dms-open-filepath
+```
+
+Run install script
+```sh
 # Copy the plugin directory to your DMS plugins folder
 chmod +x ./install && ./install
-
-# Enable in DMS
-# 2. Open DMS Settings and goto `Settings > Plugins`.
-# 3. Toggle the switch of "Open File Path" to enable it.
 ```
+
+Enable in DMS
+1. Open DMS Settings and goto `Settings > Plugins`.
+2. Toggle the switch of "Open File Path" to enable it.
 
 ## Requirements
 
