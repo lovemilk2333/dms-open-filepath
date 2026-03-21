@@ -1,20 +1,13 @@
 {
-  "id": "commandRunner",
-  "name": "Command Runner",
-  "description": "Execute shell commands directly from the launcher",
-  "version": "1.2.1",
-  "author": "devnullvoid",
-  "icon": "terminal",
+  "id": "openfilepath",
+  "name": "Open File Path",
+  "description": "Open file or directory from launcher. Input a path starting with / ~ or z:\\",
+  "version": "0.1.0",
+  "author": "lovemilk",
+  "icon": "folder_open",
   "type": "launcher",
-  "capabilities": [
-    "command-execution",
-    "shell"
-  ],
-  "component": "./CommandRunner.qml",
-  "settings": "./CommandRunnerSettings.qml",
-  "trigger": ">",
+  "component": "./OpenFilepath.qml",
   "permissions": [
-    "settings_read",
-    "settings_write"
+    "process"
   ]
 }

@@ -1,0 +1,24 @@
+#!/bin/bash
+set -eu
+
+plugin_dir="$HOME/.config/DankMaterialShell/plugins/dms-open-filepath"
+
+if [ ! -d "$HOME/.config/DankMaterialShell/plugins" ]; then
+  mkdir -p "$HOME/.config/DankMaterialShell/plugins"
+  echo "DMS plugins folder created: \`$HOME/.config/DankMaterialShell/plugins\`"
+fi
+
+if [ -d "$plugin_dir" ]; then
+  rm -rf "$plugin_dir"
+  echo "remove old plugin: \`$plugin_dir\`"
+fi
+
+rsync -rv . --exclude=.git/ "$plugin_dir"
+
+if [ $? -eq 0 ]; then
+    echo "OpenFilepath installed: \`$plugin_dir\`"
+    echo "Please enable or reload the plugin in DankMaterialShell settings"
+else
+    echo "Error: Installation failed during rsync"
+    exit 1
+fi
