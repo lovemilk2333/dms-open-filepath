@@ -31,9 +31,10 @@ QtObject {
         // NOTE: query === "~" may not work, because DMS launcher will not pass the query if query is only one special character
         const isHome = query === "~" || query === "$H" || query === "$HO" || query === "$HOM" || query === "$HOME";
         const includeHome = query.startsWith("~/");
-        const likeWinePath = query.startsWith("z:\\") || query.startsWith("Z:\\");
+        const likeWindowsPath = query.includes(":\\");
+        const likeWinePath = likeWindowsPath && (query.startsWith("z:\\") || query.startsWith("Z:\\"));
         const likePath = query.includes("/");
-        if ((likePath || likeWinePath || isHome || includeHome)) {
+        if ((likePath || likeWindowsPath || isHome || includeHome)) {
             path = query;
             displayPath = path;
             if (includeHome) {
@@ -42,10 +43,15 @@ QtObject {
                 path = "$HOME";
             }
 
-            if (likeWinePath) {
-                path = "/" + path.split(":\\", 2)[1];
-                // no `string.replaceAll()`
+            if (likeWindowsPath) {
+                // replace `\` to `/`
                 path = path.replace(/\\/g, "/");
+
+                // if is wine path, replace `z:\` to `/`
+                if (likeWinePath) {
+                    path = "/" + path.split(":/", 2)[1];
+                }
+
                 displayPath = path;
             }
         }
@@ -55,7 +61,13 @@ QtObject {
                 name: `Open filepath`,
                 icon: "material:folder_open",
                 comment: displayPath,
-                action: path,
+                action: "open::" + path,
+                categories: ["File"]
+            }, {
+                name: `Copy filepath to clipboard`,
+                icon: "material:folder_open",
+                comment: displayPath,
+                action: "copy::" + path,
                 categories: ["File"]
             });
 
@@ -68,7 +80,7 @@ QtObject {
                     name: `Open parent directory`,
                     icon: "material:folder_open",
                     comment: displayPathWithoutFile,
-                    action: pathWithoutFile,
+                    action: "open::" + pathWithoutFile,
                     categories: ["File"]
                 });
             }
@@ -77,11 +89,23 @@ QtObject {
         return items;
     }
 
+    readonly property var actions: {
+        "open": filepath => Quickshell.execDetached(['sh', '-c', `err=$(xdg-open "${filepath}" 2>&1 >/dev/null); [ $? -ne 0 ] && notify-send -a 'Open File Path' "cannot open filepath with status $?" "$err"`]),
+        "copy": filepath => Quickshell.execDetached(['wl-copy', filepath])
+    }
+
     function executeItem(item) {
         if (!item?.action)
             return;
-        const filepath = item.action;
+        const [action, filepath] = item.action.split("::", 2);
 
-        Quickshell.execDetached(['sh', '-c', `err=$(xdg-open "${filepath}" 2>&1 >/dev/null); [ $? -ne 0 ] && notify-send -a 'Open File Path' "cannot open filepath with status $?" "$err"`]);
+        if (!filepath || !filepath.length)
+            return;
+
+        const actionExecuter = actions[action];
+
+        if (typeof actionExecuter === "function") {
+            actionExecuter(filepath);
+        }
     }
 }

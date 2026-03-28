@@ -37,8 +37,7 @@ Enable in DMS
 ## Requirements
 
 - DankMaterialShell >= 0.1.0
-- `sh` in PATH
-- `xdg-open` in PATH
+- `sh`, `xdg-open`, `wl-copy` and `notify-send` were installed in PATH
 
 ## Compatibility
 
