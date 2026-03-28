@@ -2,7 +2,7 @@
   "id": "openfilepath",
   "name": "Open File Path",
   "description": "Open file or directory from launcher. Input a path starting with / ~ or z:\\",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "lovemilk",
   "icon": "folder_open",
   "type": "launcher",
