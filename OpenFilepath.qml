@@ -65,14 +65,15 @@ QtObject {
                 categories: ["File"]
             }, {
                 name: `Copy filepath to clipboard`,
-                icon: "material:folder_open",
+                icon: "material:content_copy",
                 comment: displayPath,
                 action: "copy::" + path,
                 categories: ["File"]
             });
 
             const parts = path.split('/');
-            if (parts.length > 1 && !path.endsWith("/")) {
+            // parts.length > 1 && !path.endsWith("/")
+            if (parts.length > 1) {
                 const pathWithoutFile = parts.slice(0, -1).join('/');
                 const displayPathWithoutFile = displayPath.split('/').slice(0, -1).join('/');
 
